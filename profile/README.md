@@ -94,6 +94,8 @@ AI expert or beginner? Both are welcome.
 3. **Build with Operaide.** You get access to the Community Edition, to our Discord server, and 8 weeks to build with it.
 4. **Shape what's next.** Share your experience directly with us and help make Operaide better.
 
+The organization is private during the preview and goes public afterwards. Everything you write there, issues and pull requests included, becomes public then. Write as if it were public today.
+
 <p align="center">
   <a href="https://community-edition.operaide.ai/apply"><strong>Apply for one of the 100 spots</strong></a><br>
   <sub>Apply by September 30, 2026 · free</sub>
