@@ -2,13 +2,11 @@
   <img src="https://raw.githubusercontent.com/operaide-community/.github/main/profile/operaide-icon.svg" alt="Operaide" width="120">
 </p>
 
-<p align="center"><strong>Operaide Community Edition</strong> · Free · Self-hosted · Invite-only</p>
+<p align="center"><strong>Operaide Community Edition</strong> · Free · Invite-only</p>
 
-<p align="center"><em>Your colleagues vibe code an app and ask: why do you make it so complicated?</em></p>
+<h1 align="center">Your app factory. Under your rules. Self-hosted.</h1>
 
-<h1 align="center">Let your colleagues vibe code.</h1>
-
-<p align="center">On your platform, under your rules: deployment, login, roles and data access are already there.<br>On your infrastructure, as TypeScript you can review.</p>
+<p align="center">Everyone builds apps now: you, and your colleagues by vibe coding.<br>Each app gets deployment, login, roles and the other -ilities from the factory, as TypeScript you can review.</p>
 
 <p align="center">
   <a href="https://community-edition.operaide.ai/apply"><strong>Request access</strong></a><br>
@@ -19,7 +17,7 @@
 
 <!-- App Builder screenshot: chat on the left, the running app in the preview on the right, the open model in the input field. -->
 
-Your colleague describes the app in the App Builder. The agent plans, writes the code, checks it, and deploys it to a private dev instance after every message. The App Builder is an extension you switch on, and only the roles you choose can build and publish. What your colleagues build runs as a development app; production is a separate area.
+You or your colleagues describe the app in the App Builder. The agent plans, writes the code, checks it, and deploys it to a private dev instance after every message. The App Builder is an extension you switch on, and only the roles you choose can build and publish. What is built runs as a development app; production is a separate area.
 
 ## What you review
 
