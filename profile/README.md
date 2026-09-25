@@ -26,21 +26,34 @@ The best practices are encoded in every workspace: the handbook, the rules for a
 
 One instance can do both. Or run production without Build, and build on a second instance: every app is an npm package, every instance has a built-in npm registry, and apps move between instances like any other package.
 
-## What you review
+## The vibe coding trap
 
-Whoever writes the code, it is TypeScript you can read. This composition triages a support mail:
+It always starts like this:
+
+```typescript
+const [category, summary] = await Promise.all([classify(mail), summarize(mail)]);
+const order = await lookup(findOrderNumber(mail));
+```
+
+Then it needs a REST endpoint, an OpenAPI spec, login and roles, a safe place for the shop's API key, a trace of every step, and a deployment. Each one gets vibe coded a little differently, in every app.
+
+In Operaide you write the same steps as a composition:
 
 ```typescript
 const aktorTriage = createAktorComposition('aktorTriage', ({ mail }: { mail: Aktor<string> }) => {
-    const category = aktorClassify({ mail }); // LLM call
-    const summary = aktorSummarize({ mail }); // LLM call
-    const orderNumber = aktorFindOrderNumber({ mail }); // plain TypeScript
-    const orderSummary = aktorLookupOrder({ orderNumber }); // async, calls the shop connector
+    const category = aktorClassify({ mail });
+    const summary = aktorSummarize({ mail });
+    const orderNumber = aktorFindOrderNumber({ mail });
+    const orderSummary = aktorLookupOrder({ orderNumber });
     return aktorTriageResult({ category, summary, orderSummary });
 });
 ```
 
-No `await`, because a composition is declarative, not imperative: it describes the graph and does not run it. The platform runs both LLM calls and the shop lookup in parallel, and traces every step.
+The rest is already there: the endpoint and its OpenAPI spec come from the schemas, login and roles from the platform, the key sits in a connector, and every step is traced and drawn.
+
+<!-- Trace screenshot: the run where both LLM calls and the order lookup are running at the same time. -->
+
+A composition is declarative: it describes the graph and does not run it. That is why there is no `await`, and why the platform can run independent steps in parallel.
 
 The steps are Aktors, and an Aktor is a function or a composition. A Reaktor is a REST endpoint of an app, built from Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
 
@@ -58,7 +71,10 @@ export const shop = registerConnectionType({
     type: 'shop',
     label: 'Shop',
     defaultConnectionName: 'shop',
-    configSchema: z.object({ baseUrl: z.string().url(), apiKey: z.string() }),
+    configSchema: z.object({
+        baseUrl: z.string().url().describe('[label:Base URL]Where the shop API lives'),
+        apiKey: z.string().describe('[label:API Key][secretFor:baseUrl]Sent to the shop with every request'),
+    }),
 });
 ```
 
