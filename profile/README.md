@@ -51,7 +51,9 @@ const aktorTriage = createAktorComposition('aktorTriage', ({ mail }: { mail: Akt
 
 The rest is already there: the endpoint and its OpenAPI spec come from the schemas, login and roles from the platform, the key sits in a connector, and every step is traced and drawn.
 
-<!-- Trace screenshot: the run where both LLM calls and the order lookup are running at the same time. -->
+![A run of the composition, step by step: the order lookup starts last and finishes first](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-trace.gif)
+
+<sub>The order lookup starts last and finishes first: 574 ms, while each LLM call takes over a second.</sub>
 
 A composition is declarative: it describes the graph and does not run it. That is why there is no `await`, and why the platform can run independent steps in parallel.
 
@@ -190,11 +192,19 @@ registerReaktorDefinition({
 });
 ```
 
-<!-- Screenshots of this app on a running instance: the graph, the API explorer with the OpenAPI spec, a run. -->
+The graph the platform draws from this code:
+
+![The graph of the triage composition](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-diagram.jpg)
+
+The OpenAPI spec generated from the schemas:
+
+![The API explorer with POST /reaktors/triage-mail](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-openapi.jpg)
+
+A run with the example mail:
+
+![The execution form with the support mail and the JSON result](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-execution.jpg)
 
 </details>
-
-![The graph of a multi-agent app, drawn by the platform from its code](https://raw.githubusercontent.com/operaide-community/.github/main/profile/platform.png)
 
 ## Where it runs
 
