@@ -217,6 +217,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 ## Architecture decisions
 
 - **TypeScript, not a language of our own.** Your editor knows it, and so does every model.
+- **Words of our own.** Aktor and Reaktor mean nothing yet, so nobody assumes they know what they are: not you, and not your model.
 - **An app is the unit.** It brings its own UI, its own roles and its own database, and runs in its own process. It is installed, updated and removed as one package.
 - **Functions and compositions. That is all.** Functions do the work, compositions wire them into a graph. Parallelism, traces and diagrams come from the graph.
 - **Every [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas") is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
@@ -239,7 +240,7 @@ This organization goes public after the preview, with everything written in it. 
 
 ## Terms
 
-- **Aktor**: one step of a workflow, either a function or a composition of other Aktors.
+- **Aktor**: one step of a workflow, either a function or a composition of other Aktors. Not an actor in the actor-model sense: it holds no state and exchanges no messages.
 - **Composition**: an Aktor that wires other Aktors into a graph. It is declarative: it describes the graph and does not run it.
 - **Reaktor**: a REST endpoint of an app, built from Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
 - **-ilities**: what every app needs besides its purpose: deployment, login, roles, audit, tracing.
