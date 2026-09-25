@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/operaide-community/.github/main/profile/operaide-icon.svg" alt="Operaide" width="120">
+  <img src="operaide-icon.svg" alt="Operaide" width="120">
 </p>
 
 <p align="center"><strong>Operaide Community Edition</strong> · Free · Invite-only</p>
@@ -51,7 +51,7 @@ const aktorTriage = createAktorComposition('aktorTriage', ({ mail }: { mail: Akt
 
 The rest is already there: the endpoint and its OpenAPI spec come from the schemas, login and roles from the platform, the key sits in a connector, and every step is traced and drawn.
 
-![A run of the composition, step by step: the order lookup starts last and finishes first](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-trace.gif)
+![A run of the composition, step by step: the order lookup starts last and finishes first](triage-trace.gif)
 
 <sub>The order lookup starts last and finishes first: 574 ms, while each LLM call takes over a second.</sub>
 
@@ -194,15 +194,15 @@ registerReaktorDefinition({
 
 The graph the platform draws from this code:
 
-![The graph of the triage composition](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-diagram.jpg)
+![The graph of the triage composition](triage-diagram.jpg)
 
 The OpenAPI spec generated from the schemas:
 
-![The API explorer with POST /reaktors/triage-mail](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-openapi.jpg)
+![The API explorer with POST /reaktors/triage-mail](triage-openapi.jpg)
 
 A run with the example mail:
 
-![The execution form with the support mail and the JSON result](https://raw.githubusercontent.com/operaide-community/.github/main/profile/triage-execution.jpg)
+![The execution form with the support mail and the JSON result](triage-execution.jpg)
 
 </details>
 
