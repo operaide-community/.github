@@ -153,7 +153,10 @@ const aktorClassify = createAktorComposition('aktorClassify', ({ mail }: { mail:
 
 const aktorSummarize = createAktorComposition('aktorSummarize', ({ mail }: { mail: Aktor<string> }) =>
     aktorAICall({
-        messages: aktorMessagesFromSystemAndUser({ system: aktorConst('Summarize in one sentence.'), user: mail }),
+        messages: aktorMessagesFromSystemAndUser({
+            system: aktorConst("Summarize the customer's mail in one sentence. Do not answer it."),
+            user: mail,
+        }),
         providerModel: aktorAISettingProviderModel(),
     })
 );
