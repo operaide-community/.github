@@ -6,7 +6,7 @@
 
 <h1 align="center">Your AI app factory. Under your rules. Self-hosted.</h1>
 
-<p align="center">Everyone builds apps now: you, and your colleagues by vibe coding.<br>Each app gets deployment, login, roles and the other <a href="#terms" title="What every app needs besides its purpose: deployment, login, roles, audit, tracing">-ilities</a> from the factory, as TypeScript you can review.</p>
+<p align="center">Everyone builds apps now: you, and your colleagues by vibe coding.<br>Each app gets deployment, login, roles, audit and tracing from the factory, as TypeScript you can review.</p>
 
 <p align="center">
   <a href="https://community-edition.operaide.ai/apply"><strong>Request access</strong></a><br>
@@ -17,7 +17,7 @@
 
 <!-- App Builder screenshot: chat on the left, the running app in the preview on the right, the open model in the input field. -->
 
-Every instance runs apps, each with the same [-ilities](#terms "What every app needs besides its purpose: deployment, login, roles, audit, tracing"). Switch on Build, and the same instance makes them too:
+Every instance runs apps and covers their non-functional requirements. Switch on Build, and the same instance makes them too:
 
 - **Describe it** in the App Builder. The agent plans, writes the code, checks it, and deploys it after every message. The way in for colleagues who do not code.
 - **Code it** in Studio, a VS Code-style IDE in your browser: by hand, or with Claude Code, Codex or Operaide Code, all built in.
@@ -28,36 +28,59 @@ One instance can do both. Or run production without Build, and build on a second
 
 ## The vibe coding trap
 
-It always starts like this:
+We asked a model for this workflow. It wrote the two lines in the middle:
 
 ```typescript
+// Not shown, but it will be there: an HTTP route, parsing and validating the body,
+// deciding who may call it, reading the shop's API key from an environment variable.
 const [category, summary] = await Promise.all([classify(mail), summarize(mail)]);
-const order = await lookup(findOrderNumber(mail));
+const order = await lookup(findOrderNumber(mail)); // waits for both LLM calls, though it needs neither
+// Not shown either: the response, error handling and retries, a log of each step,
+// an OpenAPI file, a Dockerfile, a deploy script.
 ```
 
-Then it needs a REST endpoint, an OpenAPI spec, login and roles, a safe place for the shop's API key, a trace of every step, and a deployment. Each one gets vibe coded a little differently, in every app.
+The two lines in the middle are what you asked for. Everything around them is what you get: vibe coded too, a little differently in every app, and rarely reviewed. And the middle does not stay two lines: logging, error handling and timing creep into every step. With thirty steps instead of three, you also work out yourself what can run in parallel, again after every change.
 
-In Operaide you write the same steps as a composition:
+## The way out
+
+In Operaide you write the same steps as a composition and register it as a REST endpoint:
 
 ```typescript
 const aktorTriage = createAktorComposition('aktorTriage', ({ mail }: { mail: Aktor<string> }) => {
-    const category = aktorClassify({ mail });
-    const summary = aktorSummarize({ mail });
-    const orderNumber = aktorFindOrderNumber({ mail });
-    const orderSummary = aktorLookupOrder({ orderNumber });
-    return aktorTriageResult({ category, summary, orderSummary });
+    const category = aktorClassify({ mail }); // composition: prompt plus LLM call
+    const summary = aktorSummarize({ mail }); // composition: prompt plus LLM call
+    const orderNumber = aktorFindOrderNumber({ mail }); // function: plain TypeScript
+    const orderSummary = aktorLookupOrder({ orderNumber }); // async function: calls the shop through a connector
+    return aktorTriageResult({ category, summary, orderSummary }); // function: combines the results
+});
+
+// A REST endpoint: the schemas validate input and output, and generate the OpenAPI spec
+registerReaktorDefinition({
+    reaktorDefinitionId: 'triage-mail',
+    label: 'Triage a support mail',
+    description: 'Classifies the mail, summarizes it, and looks up the order.',
+    aktor: aktorTriage,
+    inputSchema: z.object({ mail: z.string() }),
+    outputSchema: z.object({
+        category: z.string(),
+        summary: z.string(),
+        orderSummary: z.object({ number: z.string(), status: z.string() }).nullable(),
+    }),
 });
 ```
 
 The rest is already there: the endpoint and its OpenAPI spec come from the schemas, login and roles from the platform, the key sits in a connector, and every step is traced and drawn.
+
+> [!NOTE]
+> **Aktor** and **Reaktor** are words of our own.
+> - An **Aktor** is a node in the graph below. Its inputs are named parameters, and each one is an edge labelled with its name. An Aktor is either a **function**, ordinary TypeScript with named parameters, sync or async, or a **composition**, which wires other Aktors into a graph. It is not an actor in the actor-model sense: it holds no state and exchanges no messages.
+> - A **Reaktor** is a REST endpoint of an app, composed of Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
 
 ![A run of the composition, step by step: the order lookup starts last and finishes first](triage-trace.gif)
 
 <sub>The order lookup starts last and finishes first: 574 ms, while each LLM call takes over a second.</sub>
 
 A composition is declarative: it describes the graph and does not run it. That is why there is no `await`, and why the platform can run independent steps in parallel.
-
-The steps are [Aktors](#terms "One step of a workflow: a function, or a composition of other Aktors"), and the endpoint built from them is a [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas").
 
 <details>
 <summary><strong>The full example</strong>: connector, functions, compositions, endpoint</summary>
@@ -136,14 +159,14 @@ const aktorSummarize = createAktorComposition('aktorSummarize', ({ mail }: { mai
 );
 
 const aktorTriage = createAktorComposition('aktorTriage', ({ mail }: { mail: Aktor<string> }) => {
-    const category = aktorClassify({ mail }); // LLM call
-    const summary = aktorSummarize({ mail }); // LLM call
-    const orderNumber = aktorFindOrderNumber({ mail }); // plain TypeScript
-    const orderSummary = aktorLookupOrder({ orderNumber }); // async, calls the shop connector
-    return aktorTriageResult({ category, summary, orderSummary });
+    const category = aktorClassify({ mail }); // composition: prompt plus LLM call
+    const summary = aktorSummarize({ mail }); // composition: prompt plus LLM call
+    const orderNumber = aktorFindOrderNumber({ mail }); // function: plain TypeScript
+    const orderSummary = aktorLookupOrder({ orderNumber }); // async function: calls the shop through a connector
+    return aktorTriageResult({ category, summary, orderSummary }); // function: combines the results
 });
 
-// A REST endpoint, with its OpenAPI spec generated from the schemas
+// A REST endpoint: the schemas validate input and output, and generate the OpenAPI spec
 registerReaktorDefinition({
     reaktorDefinitionId: 'triage-mail',
     label: 'Triage a support mail',
@@ -163,7 +186,7 @@ registerReaktorDefinition({
 });
 ```
 
-The shop is a [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas") too: every Reaktor is an API.
+The shop is a Reaktor too: every Reaktor is an API.
 
 `FakeShop.reaktor.ts`
 
@@ -212,7 +235,7 @@ One Docker container on your infrastructure.
 
 Build with any model you trust with your code. Run on a model that keeps your data in the house: self-hosted on your own hardware, or hosted in Germany. Because the architecture is decided in advance, building does not need a frontier model either.
 
-Development: yes. Production: no. The Community Edition is licensed for building, testing and demos, paid client work included. Running a business on it needs a paid license.
+Development: yes. Production: no. The Community Edition is licensed for building, testing and demos, paid client work included. Running a business on it needs a paid license. Going to production means adding a license key: same image, same apps, same data.
 
 ## Architecture decisions
 
@@ -220,7 +243,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 - **Words of our own.** Aktor and Reaktor mean nothing yet, so nobody assumes they know what they are: not you, and not your model.
 - **An app is the unit.** It brings its own UI, its own roles and its own database, and runs in its own process. It is installed, updated and removed as one package.
 - **Functions and compositions. That is all.** Functions do the work, compositions wire them into a graph. Parallelism, traces and diagrams come from the graph.
-- **Every [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas") is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
+- **Every Reaktor is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
 - **The IDE lives inside the platform,** not the platform inside an IDE.
 - **git and npm as the transport.** No package format of our own.
 - **Best practices live in the workspace,** not in the agent. Any agent builds the same way.
@@ -237,12 +260,5 @@ This organization goes public after the preview, with everything written in it. 
   <a href="https://community-edition.operaide.ai/apply"><strong>Request access</strong></a><br>
   <sub>Use your personal GitHub account: managed enterprise accounts cannot be invited</sub>
 </p>
-
-## Terms
-
-- **Aktor**: one step of a workflow, either a function or a composition of other Aktors. Not an actor in the actor-model sense: it holds no state and exchanges no messages.
-- **Composition**: an Aktor that wires other Aktors into a graph. It is declarative: it describes the graph and does not run it.
-- **Reaktor**: a REST endpoint of an app, built from Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
-- **-ilities**: what every app needs besides its purpose: deployment, login, roles, audit, tracing.
 
 <p align="center"><sub>Operaide is a brand of objective partner AG · <a href="https://operaide.ai/legals/imprint">Imprint</a> · <a href="https://operaide.ai/legals/privacy-policy">Privacy Policy</a> · <a href="https://operaide.ai/contact">Contact</a></sub></p>
