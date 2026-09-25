@@ -6,7 +6,7 @@
 
 <h1 align="center">Your AI app factory. Under your rules. Self-hosted.</h1>
 
-<p align="center">Everyone builds apps now: you, and your colleagues by vibe coding.<br>Each app gets deployment, login, roles and the other -ilities from the factory, as TypeScript you can review.</p>
+<p align="center">Everyone builds apps now: you, and your colleagues by vibe coding.<br>Each app gets deployment, login, roles and the other <a href="#terms" title="What every app needs besides its purpose: deployment, login, roles, audit, tracing">-ilities</a> from the factory, as TypeScript you can review.</p>
 
 <p align="center">
   <a href="https://community-edition.operaide.ai/apply"><strong>Request access</strong></a><br>
@@ -17,7 +17,7 @@
 
 <!-- App Builder screenshot: chat on the left, the running app in the preview on the right, the open model in the input field. -->
 
-Every instance runs apps, each with the same -ilities. Switch on Build, and the same instance makes them too:
+Every instance runs apps, each with the same [-ilities](#terms "What every app needs besides its purpose: deployment, login, roles, audit, tracing"). Switch on Build, and the same instance makes them too:
 
 - **Describe it** in the App Builder. The agent plans, writes the code, checks it, and deploys it after every message. The way in for colleagues who do not code.
 - **Code it** in Studio, a VS Code-style IDE in your browser: by hand, or with Claude Code, Codex or Operaide Code, all built in.
@@ -57,7 +57,7 @@ The rest is already there: the endpoint and its OpenAPI spec come from the schem
 
 A composition is declarative: it describes the graph and does not run it. That is why there is no `await`, and why the platform can run independent steps in parallel.
 
-The steps are Aktors, and an Aktor is a function or a composition. A Reaktor is a REST endpoint of an app, built from Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
+The steps are [Aktors](#terms "One step of a workflow: a function, or a composition of other Aktors"), and the endpoint built from them is a [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas").
 
 <details>
 <summary><strong>The full example</strong>: connector, functions, compositions, endpoint</summary>
@@ -163,7 +163,7 @@ registerReaktorDefinition({
 });
 ```
 
-The shop is a Reaktor too: every Reaktor is an API.
+The shop is a [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas") too: every Reaktor is an API.
 
 `FakeShop.reaktor.ts`
 
@@ -219,7 +219,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 - **TypeScript, not a language of our own.** Your editor knows it, and so does every model.
 - **An app is the unit.** It brings its own UI, its own roles and its own database, and runs in its own process. It is installed, updated and removed as one package.
 - **Functions and compositions. That is all.** Functions do the work, compositions wire them into a graph. Parallelism, traces and diagrams come from the graph.
-- **Every Reaktor is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
+- **Every [Reaktor](#terms "A REST endpoint of an app, built from Aktors, with an OpenAPI spec from its Zod schemas") is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
 - **The IDE lives inside the platform,** not the platform inside an IDE.
 - **git and npm as the transport.** No package format of our own.
 - **Best practices live in the workspace,** not in the agent. Any agent builds the same way.
@@ -236,5 +236,12 @@ This organization goes public after the preview, with everything written in it. 
   <a href="https://community-edition.operaide.ai/apply"><strong>Request access</strong></a><br>
   <sub>Use your personal GitHub account: managed enterprise accounts cannot be invited</sub>
 </p>
+
+## Terms
+
+- **Aktor**: one step of a workflow, either a function or a composition of other Aktors.
+- **Composition**: an Aktor that wires other Aktors into a graph. It is declarative: it describes the graph and does not run it.
+- **Reaktor**: a REST endpoint of an app, built from Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
+- **-ilities**: what every app needs besides its purpose: deployment, login, roles, audit, tracing.
 
 <p align="center"><sub>Operaide is a brand of objective partner AG · <a href="https://operaide.ai/legals/imprint">Imprint</a> · <a href="https://operaide.ai/legals/privacy-policy">Privacy Policy</a> · <a href="https://operaide.ai/contact">Contact</a></sub></p>
