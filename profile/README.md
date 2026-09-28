@@ -72,7 +72,7 @@ registerReaktorDefinition({
 The rest is already there: the endpoint and its OpenAPI spec come from the schemas, login and roles from the platform, the key sits in a connector, and every step is traced and drawn.
 
 > [!NOTE]
-> **Aktor** and **Reaktor** are words of our own.
+> **Aktor** and **Reaktor** carry a declarative model: like cells in a spreadsheet, you say what depends on what, and the platform works out the order.
 > - An **Aktor** is a node in the graph below. Its inputs are named parameters, and each one is an edge labelled with its name. An Aktor is either a **function**, ordinary TypeScript with named parameters, sync or async, or a **composition**, which wires other Aktors into a graph. It is not an actor in the actor-model sense: it holds no state and exchanges no messages.
 > - A **Reaktor** is a REST endpoint of an app, composed of Aktors. Its Zod input and output schemas generate the endpoint and its OpenAPI spec.
 
