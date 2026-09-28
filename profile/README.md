@@ -248,7 +248,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 - **Every Reaktor is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
 - **The IDE lives inside the platform,** not the platform inside an IDE.
 - **git and npm as the transport.** No package format of our own.
-- **Best practices live in the workspace,** not in the agent. Any agent builds the same way, and every model learns the platform there.
+- **Best practices live in the workspace.** A capable agent reads them there. Operaide Code, built for local models, also enforces them.
 
 ## How to get in
 
