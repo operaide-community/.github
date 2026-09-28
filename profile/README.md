@@ -245,7 +245,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 - **TypeScript, not a language of our own.** Your editor knows it, and so does every model.
 - **Words of our own.** Aktor and Reaktor mean nothing yet, so nobody assumes they know what they are: not you, and not your model.
 - **An app is the unit.** It brings its own UI, its own roles and its own database, and runs in its own process. It is installed, updated and removed as one package.
-- **Functions and compositions. That is all.** Functions do the work, compositions wire them into a graph. Parallelism, traces and diagrams come from the graph.
+- **Functions and compositions. That is all.** Functions do the work, compositions wire them into a graph. A composition builds the graph and the platform interprets it: the GoF Interpreter pattern. Parallelism, traces and diagrams come from the graph.
 - **Every Reaktor is an API.** REST, with an OpenAPI spec generated from its schemas. Other apps, other Reaktors and your existing systems call it the same way.
 - **The IDE lives inside the platform,** not the platform inside an IDE.
 - **git and npm as the transport.** No package format of our own.
