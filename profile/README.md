@@ -28,7 +28,7 @@ One instance can do both. Or run production without Build, and build on a second
 
 ## The vibe coding trap
 
-We asked a model for this workflow. It wrote the two lines in the middle:
+Not every team may use the best model: the data has to stay in the house, or a corporate license bills every token. So we asked a model you can run on your own hardware, Qwen 3.8 with 27B parameters, for a small workflow: classify a support mail, summarize it, and look up the order it mentions. It wrote the two lines in the middle, and so did Claude Sonnet 5. Only the newest Claude models, Opus 5.5 and Sonnet 5.5, got them right:
 
 ```typescript
 // Not shown, but it will be there: an HTTP route, parsing and validating the body,
