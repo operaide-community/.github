@@ -15,12 +15,9 @@
 
 ## Run is the platform. Build is an extension.
 
-<!-- App Builder screenshot: chat on the left, the running app in the preview on the right, the open model in the input field. -->
+<!-- Studio screenshot: an agent chat on the left, the running app in the preview on the right. -->
 
-Every instance runs apps and covers their non-functional requirements. Switch on Build, and the same instance makes them too:
-
-- **Describe it** in the App Builder. The agent plans, writes the code, checks it, and deploys it after every message. The way in for colleagues who do not code.
-- **Code it** in Studio, a VS Code-style IDE in your browser: by hand, or with Claude Code, Codex or Operaide Code, all built in.
+Every instance runs apps and covers their non-functional requirements. Switch on Build, and the same instance makes them too: in Studio, a VS Code-style IDE in your browser, by hand or with Claude Code, Codex or Operaide Code, all built in.
 
 The best practices are encoded in every workspace: the handbook, the rules for agents, types and lint checks. Whichever agent writes the code, it builds the app the same way.
 
@@ -254,7 +251,7 @@ Development: yes. Production: no. The Community Edition is licensed for building
 
 1. **Request access** with your email and GitHub handle.
 2. **We invite you** to this organization: the repositories, the handbook, the Discord server, and €5 of credit for models hosted in Germany from our partner Noirdoc.
-3. **One container, one description.** `docker compose up`, add a model, switch on the App Builder, describe your first app.
+3. **One container, one description.** `docker compose up`, add a model, open Studio, and let an agent build your first app.
 
 This organization goes public after the preview, with everything written in it. Write as if it were public today.
 
